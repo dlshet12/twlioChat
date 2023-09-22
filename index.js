@@ -1,6 +1,7 @@
 var express = require('express')
 var cors = require('cors')
 var app = express();
+app.use(express.json())
 
 const twilioAccountSid = "AC5e774af019192c57c653440f4c5b80d5";
 const twilioApiKey = "SKe43b757259562644f940b532a21ef882";
@@ -51,13 +52,18 @@ function generateUniqueChatRoomName() {
 
 app.use(cors())
 
-app.get('/twilio/token/:identity/:user2', async (req, res, next) => {
-    const token = await generateToken(req.params.identity)
-    const chatroomName = findOrCreateChatRoom(req.params.identity, req.params.user2);
-    res.send({ token: token.toJwt(), chatroom: chatroomName });
+app.post('/twilio/token/:identity', async (req, res, next) => {
+  let { receiver_id: user2} = req.body 
+  if (!user2) {
+    user2 = 'nil';
+  }
+  console.log('USER ID: ', user2)
+    const token = await generateToken(String(req.params.identity))
+    const chatroomName = findOrCreateChatRoom(String(req.params.identity), String(user2));
+    res.send({ chat_token: token.toJwt(), chat_room: { name: chatroomName } });
 })
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, function (identity) {
   console.log(`CORS-enabled web server listening on port ${PORT}`)

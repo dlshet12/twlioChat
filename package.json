@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "nodemon": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +15,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "i": "^0.3.7",
+    "nodemon": "^3.0.1",
     "npm": "^10.1.0",
     "twilio": "^4.17.0"
   }
